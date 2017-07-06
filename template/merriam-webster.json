@@ -1,0 +1,6 @@
+{
+  "target-url":"http://www.merriam-webster.com/dictionary/%s",
+  "name":"<h1>(.*?)</h1>",
+  "pronunciation":"<span class=\"pr\">(.*?)</span>",
+  "definitions":[ "<span><span class=\"intro-colon\">:</span>(.*?)</span>"]
+}
