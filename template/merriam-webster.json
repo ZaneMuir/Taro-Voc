@@ -1,4 +1,5 @@
 {
+  "dict-name":"merriam-webster's dictionary",
   "target-url":"http://www.merriam-webster.com/dictionary/%s",
   "name":"<h1>(.*?)</h1>",
   "pronunciation":"<span class=\"pr\">(.*?)</span>",

@@ -1,9 +1,15 @@
 import requests
 import os, json, re, time
+import multiprocessing as mp
 from bcolors import bcolors
 
 config_file_addr = os.path.join(os.getenv('HOME'), '.voc/config.json')
 
+def default_modification(x):
+    new = []
+    for i in x:
+        new.append(re.sub(r'(<.*?>|</.*?>)', '', i))
+    return new
 
 
 class TaroVoc(object):
@@ -21,7 +27,7 @@ class TaroVoc(object):
             self.dictionary = json.loads(dict_config_file.read())
         return
 
-    def check_single_word(self, word, showResult=True, color=True):
+    def check_single_word(self, word, showResult=True, color=True, modification=default_modification):
         # grab dictionary data
         data_url = self.dictionary['target-url']%word
         data_object = requests.get(data_url)
@@ -35,6 +41,8 @@ class TaroVoc(object):
         entry['pronunciation'] = re.findall(self.dictionary['pronunciation'],data)[0]
         for item in self.dictionary['definitions']:
             entry['definitions'].extend(re.findall(item,data))
+
+        entry['definitions'] = modification(entry['definitions'])
         #print(entry)
 
         # return and print results
@@ -58,3 +66,38 @@ class TaroVoc(object):
             output_file.write('/'.join(entry['definitions'])+'\t')
             output_file.write(entry['pronunciation'])
             output_file.write('\n')
+
+    def check_file(self, file_addr):
+        # read file and set a Queue
+        process_n=self.config['process_n']
+        self.word_tocheck = mp.Queue()
+        self.mp_lock = mp.Lock()
+        with open(file_addr, 'r') as word_file:
+            for i in re.split(r'\n',word_file.read()):
+                self.word_tocheck.put(i)
+
+        # single mission
+        def mission():
+            while not self.word_tocheck.empty():
+                # get a word from Queue
+                self.mp_lock.acquire()
+                word = self.word_tocheck.get()
+                self.mp_lock.release()
+
+                #check and store
+                if word == '':
+                    continue
+                entry = self.check_single_word(word, showResult=False)
+                self.saveEntry(entry)
+                print(entry['name'])
+
+        worker = []
+        for i in range(process_n):
+            p = mp.Process(target = mission)
+            worker.append(p)
+            p.start()
+
+        for i in range(process_n):
+            worker[i].join()
+
+        print('finished')
