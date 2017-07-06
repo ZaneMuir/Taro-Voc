@@ -1,0 +1,7 @@
+{
+  "dict-name":"merriam-webster's medical dictionary",
+  "target-url":"http://www.merriam-webster.com/medical/%s",
+  "name":"<h1>(.*?)</h1>",
+  "pronunciation":"<span class=\"pr\">(.*?)</span>",
+  "definitions":[ "<div class=\"card-primary-content\"><ol class=\"definition-list\"><li><p class=\"definition-inner-item\"><span>(.*?)</span></p></li></ol></div>"]
+}
