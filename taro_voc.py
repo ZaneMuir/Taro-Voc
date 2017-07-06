@@ -1,7 +1,7 @@
 import requests
 import os, json, re, time
 import multiprocessing as mp
-from bcolors import bcolors
+from colors import colors
 
 config_file_addr = os.path.join(os.getenv('HOME'), '.voc/config.json')
 
@@ -47,10 +47,10 @@ class TaroVoc(object):
 
         # return and print results
         if showResult:
-            print(bcolors.BOLD + bcolors.BRIGHT_GREEN + entry['name'] + bcolors.ENDC)
-            print(bcolors.BRIGHT_CYAN + entry['pronunciation'] + bcolors.ENDC)
+            print(colors.color(entry['name'],foreground='GREEN', format_str='b'))
+            print(colors.color(entry['pronunciation'], foreground='BRIGHT_CYAN'))
             for i in range(len(entry['definitions'])):
-                print(bcolors.BRIGHT_RED + str(i+1) + bcolors.ENDC + '. %s'%entry['definitions'][i])
+                print(colors.color(str(i+1), foreground='RED') + '. %s'%entry['definitions'][i])
 
         return entry
 
