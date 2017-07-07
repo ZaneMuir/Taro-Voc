@@ -1,5 +1,5 @@
 # voc_python
-a python script to look up a new word from web dictionaries like [Merriam-Webster's]().
+a python script to look up a new word from web dictionaries like [Merriam-Webster's](http://merriam-webster.com/).
 
 and store the data with the formate designed for import of [ProVoc](http://www.arizona-software.ch/provoc/)
 
@@ -8,16 +8,16 @@ and store the data with the formate designed for import of [ProVoc](http://www.a
 ---
 Usage:
 ```
-Taro-Voc v0.1
+Taro-Voc v0.2
 Usage:
     voc WORD
     voc -f FILE
-    voc -l LANG WORD
-    voc install TEMPLATE
+    voc install TEMPLATE #coming
 
 Options:
     -f FILE, check every words in a txt file, with one word in each line.
     -l LANG, using another language template
+    --new , with a new output file #coming
 
 ```
 
@@ -25,6 +25,12 @@ Options:
 
 #### Change Log
 
+##### v0.2
+- color print with [TaroColor](https://github.com/ZaneMuir/Taro-Color)
+- multiprocessing with file mode
+- using multiple dictionary templates (with manual installation)
+- support for **Merriam-Webster's Medical Dictionary** (```-l mmed```)
 
 ##### v0.1
 - first commit
+- support for **Merriam-Webster's Dictionary** (as default)
