@@ -1,0 +1,7 @@
+{
+  "dict-name":"youdao dictionary",
+  "target-url":"http://dict.youdao.com/w/eng/%s",
+  "name":"<meta name=\"keywords\" content=\"(.*?)\"/>",
+  "pronunciation":"<span class=\"phonetic\">(.*?)</span>",
+  "definitions":["<li>(\\w+\\..*?)</li>"]
+}

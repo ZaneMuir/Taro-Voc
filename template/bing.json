@@ -1,0 +1,7 @@
+{
+  "dict-name":"bing dictionary",
+  "target-url":"http://cn.bing.com/dict/search?q=%s",
+  "name":"<h1><strong>(.*?)</strong></h1>",
+  "pronunciation":"<div class=\"hd_prUS\">.*?(\\[.*?\\]).*?</div>",
+  "definitions":["<span class=\"def\"><span>(.*?)</span></span>"]
+}
