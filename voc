@@ -17,6 +17,7 @@ Options:
 
 from docopt import docopt
 from taro_voc import TaroVoc
+from configuration import install_template
 
 #default_config_file_addr = os.path.join(os.getenv('HOME'), '.voc/config.json')
 default_config_file_addr = 'config.json'
@@ -30,9 +31,12 @@ if __name__ == '__main__':
         voc_handler.set_dictionary(arguments['-l'])
 
     if arguments['install']:
-        pass #TODO install templates
+        if install_template(arguments['TEMPLATE']):
+            print('installed')
+        else:
+            print('error!')
     elif arguments['-f']:
-        voc_handler.check_file(arguments['-f'])
+        voc_handler.check_file(arguments['-f'], arguments['--new'])
     else:
         entry = voc_handler.check_single_word(arguments['WORD'])
         voc_handler.saveEntry(entry)

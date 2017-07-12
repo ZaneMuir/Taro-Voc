@@ -11,19 +11,24 @@ Usage:
 Taro-Voc v0.2
 Usage:
     voc WORD
-    voc -f FILE
-    voc install TEMPLATE #coming
+    voc -f FILE [--new]
+    voc install TEMPLATE
 
 Options:
     -f FILE, check every words in a txt file, with one word in each line.
     -l LANG, using another language template
-    --new , with a new output file #coming
+    --new , with a new output file (with -f mode)
 
 ```
 
 ---
 
 #### Change Log
+
+##### v0.2.1
+- support for Chinese-English dictionaries: **youdao dictionary** (```-l youdao```) and **bing dictionary** (```-l bing```)
+- auto-installation of templates file
+- using ```--new``` to output into a new single file
 
 ##### v0.2
 - color print with [TaroColor](https://github.com/ZaneMuir/Taro-Color)

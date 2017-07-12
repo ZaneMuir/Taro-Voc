@@ -39,6 +39,8 @@ class TaroVoc(object):
             'definitions':[]}
         entry['name'] = re.findall(self.dictionary['name'],data)[0]
         entry['pronunciation'] = re.findall(self.dictionary['pronunciation'],data)[0]
+
+        #entry['definitions'] = [entry['definitions'].extend(re.findall(item,data)) for item in self.dictionary['definitions']]
         for item in self.dictionary['definitions']:
             entry['definitions'].extend(re.findall(item,data))
 
@@ -54,9 +56,13 @@ class TaroVoc(object):
 
         return entry
 
-    def saveEntry(self, entry):
+    def saveEntry(self, entry, fileName=None):
         #check file
-        output_addr = os.path.join(self.config['output-dir'],'%s.txt'%time.strftime(self.config['filename-format']))
+        if fileName:
+            output_addr = fileName
+        else:
+            output_addr = os.path.join(self.config['output-dir'],'%s.txt'%time.strftime(self.config['filename-format']))
+
         if not os.path.isfile(output_addr):
             with open(output_addr, 'w') as output_file:
                 output_file.write('')
@@ -67,7 +73,7 @@ class TaroVoc(object):
             output_file.write(entry['pronunciation'])
             output_file.write('\n')
 
-    def check_file(self, file_addr):
+    def check_file(self, file_addr, newFile=False):
         # read file and set a Queue
         process_n=self.config['process_n']
         self.word_tocheck = mp.Queue()
@@ -75,6 +81,16 @@ class TaroVoc(object):
         with open(file_addr, 'r') as word_file:
             for i in re.split(r'\n',word_file.read()):
                 self.word_tocheck.put(i)
+
+        if newFile:
+            output_addr = os.path.join(self.config['output-dir'],'%s.txt'%time.strftime(self.config['filename-format']))
+            i = 1
+            while os.path.isfile(output_addr):
+                output_addr = os.path.join(self.config['output-dir'],'%s-%d.txt'%(time.strftime(self.config['filename-format']),i))
+                i += 1
+        else:
+            output_addr = None
+
 
         # single mission
         def mission():
@@ -88,7 +104,7 @@ class TaroVoc(object):
                 if word == '':
                     continue
                 entry = self.check_single_word(word, showResult=False)
-                self.saveEntry(entry)
+                self.saveEntry(entry, output_addr)
                 print(entry['name'])
 
         worker = []
