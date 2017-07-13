@@ -2,6 +2,7 @@ import requests
 import os, json, re, time
 import multiprocessing as mp
 from TaroColor import TaroColor
+import offline
 
 config_file_addr = os.path.join(os.getenv('HOME'), '.voc/config.json')
 
@@ -30,21 +31,26 @@ class TaroVoc(object):
     def check_single_word(self, word, showResult=True, color=True, modification=default_modification):
         # grab dictionary data
         data_url = self.dictionary['target-url']%word
-        data_object = requests.get(data_url)
-        data = data_object.text
+        try:
+            data_object = requests.get(data_url)
+            data = data_object.text
 
-        # analyze data
-        entry = {'name':'',
-            'pronunciation':'',
-            'definitions':[]}
-        entry['name'] = re.findall(self.dictionary['name'],data)[0]
-        entry['pronunciation'] = re.findall(self.dictionary['pronunciation'],data)[0]
+            # analyze data
+            entry = {'name':'',
+                'pronunciation':'',
+                'definitions':[]}
+            entry['name'] = re.findall(self.dictionary['name'],data)[0]
+            entry['pronunciation'] = re.findall(self.dictionary['pronunciation'],data)[0]
 
-        #entry['definitions'] = [entry['definitions'].extend(re.findall(item,data)) for item in self.dictionary['definitions']]
-        for item in self.dictionary['definitions']:
-            entry['definitions'].extend(re.findall(item,data))
+            #entry['definitions'] = [entry['definitions'].extend(re.findall(item,data)) for item in self.dictionary['definitions']]
+            for item in self.dictionary['definitions']:
+                entry['definitions'].extend(re.findall(item,data))
 
-        entry['definitions'] = modification(entry['definitions'])
+            entry['definitions'] = modification(entry['definitions'])
+
+        except requests.exceptions.ConnectionError:
+            entry = offline.system_dictionary(word)
+
         #print(entry)
 
         # return and print results

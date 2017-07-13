@@ -8,7 +8,7 @@ and store the data with the formate designed for import of [ProVoc](http://www.a
 ---
 Usage:
 ```
-Taro-Voc v0.2
+Taro-Voc v0.3
 Usage:
     voc WORD
     voc -f FILE [--new]
@@ -24,6 +24,11 @@ Options:
 ---
 
 #### Change Log
+
+##### v0.3
+- support for **MacOS Dictionary.app** (```-l mac``` and as default when offline)
+- display definitions with groups of its part-of-speech (ie. noun, pronoun, adjective, determiner, verb, adverb, preposition, conjunction, and interjection.) #TODO
+
 
 ##### v0.2.1
 - support for Chinese-English dictionaries: **youdao dictionary** (```-l youdao```) and **bing dictionary** (```-l bing```)
